@@ -29,7 +29,7 @@
 #endif
 #include <Adafruit_GFX.h>
 #if defined(ESP8266)
-// If you get matrix flickering, modify platforms/esp/8266/clockless_esp8266.h 
+// If you get matrix flickering, modify platforms/esp/8266/clockless_esp8266.h
 // and platforms/esp/8266/clockless_block_esp8266.h to change WAIT_TIME to 20
 //#pragma message "If you get matrix corruption, turn off FASTLED_ALLOW_INTERRUPTS"
 //#pragma message "in this library, or modify WAIT_TIME in platforms/esp/8266/clockless_esp8266.h"
@@ -73,7 +73,7 @@
 #define NEO_TILE_ZIGZAG        0x80 // Tile order reverses between lines
 #define NEO_TILE_SEQUENCE      0x80 // Bitmask for tile line order
 
-/* 
+/*
  * Ideally FastLED_NeoMatrix would multiple inherit from CFastLED too
  * I tried this, but on that path laid madness, apparent compiler bugs
  * and pain due to the unfortunate use of templates in FastLED, preventing
@@ -87,11 +87,11 @@ class FastLED_NeoMatrix : public Adafruit_GFX {
   uint8_t gamma[256];
 
   // Constructor for single matrix:
-  FastLED_NeoMatrix(CRGB *, uint8_t w, uint8_t h, 
+  FastLED_NeoMatrix(CRGB *, uint8_t w, uint8_t h,
     uint8_t matrixType = NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS);
 
   // Constructor for tiled matrices:
-  FastLED_NeoMatrix(CRGB *, uint8_t matrixW, uint8_t matrixH, 
+  FastLED_NeoMatrix(CRGB *, uint8_t matrixW, uint8_t matrixH,
     uint8_t tX, uint8_t tY,
     uint8_t matrixType = NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS +
                          NEO_TILE_TOP + NEO_TILE_LEFT + NEO_TILE_ROWS);
@@ -105,6 +105,9 @@ class FastLED_NeoMatrix : public Adafruit_GFX {
     setPassThruColor(void),
     setRemapFunction(uint16_t (*fn)(uint16_t, uint16_t)),
     precal_gamma(float);
+
+    void setLeds(CRGB *leds) { _leds = leds; };
+    CRGB* getLeds() { return _leds; };
 
   static uint16_t
     Color(uint8_t r, uint8_t g, uint8_t b);
