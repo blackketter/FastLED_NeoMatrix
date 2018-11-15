@@ -34,6 +34,7 @@
   -------------------------------------------------------------------------*/
 
 #include <Adafruit_GFX.h>
+#define FASTLED_INTERNAL
 #include <FastLED_NeoMatrix.h>
 #include <FastLED.h>
 #include "gamma.h"
@@ -54,23 +55,23 @@
 
 
 // Constructor for single matrix:
-FastLED_NeoMatrix::FastLED_NeoMatrix(CRGB *leds, uint8_t w, uint8_t h, 
-    uint8_t matrixType): 
+FastLED_NeoMatrix::FastLED_NeoMatrix(CRGB *leds, uint8_t w, uint8_t h,
+    uint8_t matrixType):
   Adafruit_GFX(w, h),
-  type(matrixType), matrixWidth(w), matrixHeight(h), tilesX(0), tilesY(0), 
-  remapFn(NULL) { 
+  type(matrixType), matrixWidth(w), matrixHeight(h), tilesX(0), tilesY(0),
+  remapFn(NULL) {
     _leds = leds;
-    // WARNING: Serial.print seems to crash in the constructor, 
+    // WARNING: Serial.print seems to crash in the constructor,
     // but works in begin()
     numpix = matrixWidth * matrixHeight;
   }
 
 // Constructor for tiled matrices:
-FastLED_NeoMatrix::FastLED_NeoMatrix(CRGB *leds, uint8_t mW, uint8_t mH, 
+FastLED_NeoMatrix::FastLED_NeoMatrix(CRGB *leds, uint8_t mW, uint8_t mH,
     uint8_t tX, uint8_t tY, uint8_t matrixType) :
   Adafruit_GFX(mW * tX, mH * tY),
-  type(matrixType), matrixWidth(mW), matrixHeight(mH), tilesX(tX), tilesY(tY), 
-  remapFn(NULL) { 
+  type(matrixType), matrixWidth(mW), matrixHeight(mH), tilesX(tX), tilesY(tY),
+  remapFn(NULL) {
     _leds = leds;
     numpix = matrixWidth * matrixHeight * tilesX * tilesY;
  }
