@@ -96,6 +96,14 @@ uint16_t FastLED_NeoMatrix::Color(uint8_t r, uint8_t g, uint8_t b) {
                     (b         >> 3);
 }
 
+uint16_t FastLED_NeoMatrix::Color(uint32_t c) {
+  return Color((c>>16) & (uint32_t)0xff, (c>>8) & (uint32_t)0xff, c & (uint32_t)0xff);
+}
+
+uint16_t FastLED_NeoMatrix::Color(CRGB& c) {
+  return Color(c.r, c.g, c.b);
+}
+
 // Pass-through is a kludge that lets you override the current drawing
 // color with a 'raw' RGB (or RGBW) value that's issued directly to
 // pixel(s), side-stepping the 16-bit color limitation of Adafruit_GFX.
