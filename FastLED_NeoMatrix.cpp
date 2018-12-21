@@ -83,10 +83,16 @@ void FastLED_NeoMatrix::begin() {
 
 // Expand 16-bit input color (Adafruit_GFX colorspace) to 24-bit (NeoPixel)
 // (w/gamma adjustment)
-static uint32_t expandColor(uint16_t color) {
-  return ((uint32_t)pgm_read_byte(&gamma5[ color >> 11       ]) << 16) |
-         ((uint32_t)pgm_read_byte(&gamma6[(color >> 5) & 0x3F]) <<  8) |
-                    pgm_read_byte(&gamma5[ color       & 0x1F]);
+static uint32_t expandColor(uint16_t color, bool gammaFlag = true) {
+  if (gammaFlag) {
+    return ((uint32_t)pgm_read_byte(&gamma5[ color >> 11       ]) << 16) |
+           ((uint32_t)pgm_read_byte(&gamma6[(color >> 5) & 0x3F]) <<  8) |
+                      pgm_read_byte(&gamma5[ color       & 0x1F]);
+  } else {
+    return ((color >> 11) << 19) |
+           (((color >> 5) & 0x3F) << 10) |
+           (color & 0x1F) << 3;
+  }
 }
 
 // Downgrade 24-bit color to 16-bit (add reverse gamma lookup here?)
@@ -234,13 +240,13 @@ void FastLED_NeoMatrix::drawPixel(int16_t x, int16_t y, uint16_t color) {
 
   if((x < 0) || (y < 0) || (x >= _width) || (y >= _height)) return;
 
-  _leds[XY(x,y)] = passThruFlag ? passThruColor : expandColor(color);
+  _leds[XY(x,y)] = passThruFlag ? passThruColor : expandColor(color, gammaFlag);
 }
 
 void FastLED_NeoMatrix::fillScreen(uint16_t color) {
   uint32_t c;
 
-  c = passThruFlag ? passThruColor : expandColor(color);
+  c = passThruFlag ? passThruColor : expandColor(color, gammaFlag);
   for (uint16_t i=0; i<numpix; i++) { _leds[i]=c; }
 }
 
@@ -254,4 +260,7 @@ void FastLED_NeoMatrix::precal_gamma(float gam) {
   }
 }
 
+void FastLED_NeoMatrix::enableGamma(bool enable) {
+  gammaFlag = enable;
+}
 // vim:sts=2:sw=2

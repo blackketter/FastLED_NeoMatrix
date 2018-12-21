@@ -143,7 +143,8 @@ class FastLED_NeoMatrix : public Adafruit_GFX {
     setPassThruColor(uint32_t c),
     setPassThruColor(void),
     setRemapFunction(uint16_t (*fn)(uint16_t, uint16_t)),
-    precal_gamma(float);
+    precal_gamma(float),
+    enableGamma(bool enable);
 
     void setLeds(CRGB *leds) { _leds = leds; };
     CRGB* getLeds() { return _leds; };
@@ -186,6 +187,7 @@ class FastLED_NeoMatrix : public Adafruit_GFX {
 
   uint32_t passThruColor;
   boolean  passThruFlag = false;
+  boolean  gammaFlag = true;
 };
 
 #endif // _FASTLED_NEOMATRIX_H_
