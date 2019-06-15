@@ -243,11 +243,41 @@ void FastLED_NeoMatrix::drawPixel(int16_t x, int16_t y, uint16_t color) {
   _leds[XY(x,y)] = passThruFlag ? passThruColor : expandColor(color, gammaFlag);
 }
 
+void FastLED_NeoMatrix::drawPixelCRGB(int16_t x, int16_t y, CRGB color) {
+
+  if((x < 0) || (y < 0) || (x >= _width) || (y >= _height)) return;
+
+  _leds[XY(x,y)] = color;
+}
+
+uint16_t FastLED_NeoMatrix::getPixel(int16_t x, int16_t y) {
+
+  if((x < 0) || (y < 0) || (x >= _width) || (y >= _height)) return 0;
+  return Color(_leds[XY(x,y)]);
+}
+
+CRGB FastLED_NeoMatrix::getPixelCRGB(int16_t x, int16_t y) {
+
+  if((x < 0) || (y < 0) || (x >= _width) || (y >= _height)) return 0;
+
+  return _leds[XY(x,y)];
+}
+
+
 void FastLED_NeoMatrix::fillScreen(uint16_t color) {
   uint32_t c;
 
   c = passThruFlag ? passThruColor : expandColor(color, gammaFlag);
   for (uint16_t i=0; i<numpix; i++) { _leds[i]=c; }
+}
+
+void FastLED_NeoMatrix::copy(FastLED_NeoMatrix* to) {
+  for (int16_t x = 0; x < _width; x++) {
+    for (int16_t y = 0; y < _height; y++) {
+      to->drawPixelCRGB(x,y, getPixelCRGB(x,y));
+    }
+  }
+//  memcpy( to->getLeds(), getLeds(), sizeof(CRGB)*_width*_height);
 }
 
 void FastLED_NeoMatrix::setRemapFunction(uint16_t (*fn)(uint16_t, uint16_t)) {

@@ -174,6 +174,11 @@ class FastLED_NeoMatrix : public Adafruit_GFX {
 
   void begin();
 
+  uint16_t getPixel(int16_t x, int16_t y);
+  CRGB getPixelCRGB(int16_t x, int16_t y);
+  void drawPixelCRGB(int16_t x, int16_t y, CRGB color);
+  void copy(FastLED_NeoMatrix* to);
+
  private:
 
   CRGB *_leds;
